@@ -23,8 +23,8 @@
         </flux:sidebar.nav>
 
         {{-- TODO: --}}
-        <flux:sidebar.item icon="document" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
-            wire:navigate>
+        <flux:sidebar.item icon="document" :href="route('dashboard.document')"
+            :current="request()->routeIs('dashboard')" wire:navigate>
             {{ __('Documents') }}
         </flux:sidebar.item>
 
