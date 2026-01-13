@@ -2,33 +2,51 @@
 
 namespace App\Livewire\Dashboard;
 
-use App\Services\FinancialDocumentService;
+
+use Filament\Tables\Contracts\HasTable;
 use Livewire\Component;
 use App\Models\User;
-use App\Services\FinancialDocument;
+use App\Services\DatatableService;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Concerns\InteractsWithTable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
-use App\Enums\DocumentStatus;
+use Filament\Tables\Table;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use App\Models\FinancialDocument;
 
-class DocumentSection extends Component
+
+class DocumentSection extends Component implements HasTable, HasForms
 {
+    use InteractsWithTable, InteractsWithForms;
+
+    protected DatatableService $datatableService;
     public User $user;
     public Collection $financialDocuments;
-    public $drafted;
-    public $validated;
-    public $paid;
-    public $archived;
+
+    public function boot(DatatableService $datatableService)
+    {
+        $this->datatableService = $datatableService;
+    }
+
+    public function table(Table $table)
+    {
+        return $table
+            ->query(
+                FinancialDocument::where('user_id', $this->user->id)->latest()
+            )
+            ->columns($this->datatableService->financialDocumentColumns());
+        //->filter($tableService->financialDocumentFilters())
+
+    }
 
 
-    public function mount(FinancialDocumentService $financialDocumentService)
+    public function mount()
     {
         $this->user = Auth::user();
         $this->financialDocuments = $this->user->financialDocuments;
-
-        $this->drafted   = $financialDocumentService->filterDocumentByStatus($this->financialDocuments, DocumentStatus::DRAFT);
-        $this->validated = $financialDocumentService->filterDocumentByStatus($this->financialDocuments, DocumentStatus::VALIDATED);
-        $this->paid      = $financialDocumentService->filterDocumentByStatus($this->financialDocuments, DocumentStatus::PAID);
-        $this->archived  = $financialDocumentService->filterDocumentByStatus($this->financialDocuments, DocumentStatus::ARCHIVED);
     }
 
     public function render()

@@ -105,6 +105,7 @@
     {{ $slot }}
 
     @fluxScripts
+    @filamentScripts
 </body>
 
 </html>
