@@ -37,9 +37,9 @@ class DocumentSection extends Component implements HasTable, HasForms
             ->query(
                 FinancialDocument::where('user_id', $this->user->id)->latest()
             )
-            ->columns($this->datatableService->financialDocumentColumns());
-        //->filter($tableService->financialDocumentFilters())
-
+            ->columns($this->datatableService->financialDocumentColumns())
+            ->filters($this->datatableService->financialDocumentFilters())
+            ->defaultPaginationPageOption(10);
     }
 
 
