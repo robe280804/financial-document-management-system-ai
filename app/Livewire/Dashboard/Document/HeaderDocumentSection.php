@@ -18,10 +18,10 @@ class HeaderDocumentSection extends Component
     public function mount(FinancialDocumentService $financialDocumentService, Collection $financialDocuments)
     {
         $this->totalDocuments = $financialDocuments->count();
-        $this->drafted   = $financialDocumentService->filterDocumentByStatus($financialDocuments, DocumentStatus::DRAFT)->count();
+        $this->drafted = $financialDocumentService->filterDocumentByStatus($financialDocuments, DocumentStatus::DRAFT)->count();
         $this->validated = $financialDocumentService->filterDocumentByStatus($financialDocuments, DocumentStatus::VALIDATED)->count();
-        $this->paid      = $financialDocumentService->filterDocumentByStatus($financialDocuments, DocumentStatus::PAID)->count();
-        $this->archived  = $financialDocumentService->filterDocumentByStatus($financialDocuments, DocumentStatus::ARCHIVED)->count();
+        $this->paid = $financialDocumentService->filterDocumentByStatus($financialDocuments, DocumentStatus::PAID)->count();
+        $this->archived = $financialDocumentService->filterDocumentByStatus($financialDocuments, DocumentStatus::ARCHIVED)->count();
     }
 
     public function render()

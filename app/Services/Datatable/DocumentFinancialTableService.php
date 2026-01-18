@@ -15,6 +15,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Grid;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
+
 
 class DocumentFinancialTableService implements DatatableInterface
 {
@@ -150,9 +158,17 @@ class DocumentFinancialTableService implements DatatableInterface
     public function makeActions(): array
     {
         return [
-            Action::make('edit')
-                ->url(fn(FinancialDocument $document): string => route('dashboard', $document))
-                ->openUrlInNewTab(),
+            ActionGroup::make([
+                Action::make('edit')
+                    ->url(fn(FinancialDocument $document): string => route('dashboard', $document))
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-m-pencil-square'),
+                Action::make('view')
+                    ->url(fn(FinancialDocument $document): string => route('dashboard', $document))
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-m-eye'),
+            ])
+                ->color('info')
         ];
     }
 
@@ -161,8 +177,89 @@ class DocumentFinancialTableService implements DatatableInterface
         return [
             BulkAction::make('delete')
                 ->requiresConfirmation()
-                ->action(fn(FinancialDocument $document) => $document->each->delete())
+                ->action(fn(Collection $document) => $document->each->delete())
                 ->color('danger')
+        ];
+    }
+
+    public function headerActions(): array
+    {
+        return [
+            CreateAction::make()
+                ->label('New Document')
+                ->icon('heroicon-m-document-plus')
+                ->modalHeading('Create Financial Document')
+                ->modalDescription('Enter the details for the new financial record.')
+                ->modalWidth('2xl') // Larghezza ottimale per un form a due colonne
+                ->slideOver() // Molto elegante: apre il form lateralmente invece che al centro
+                ->form([
+                    Grid::make(2) // Dividiamo il form in due colonne
+                        ->schema([
+                            TextInput::make('name')
+                                ->label('Document Name')
+                                ->placeholder('e.g. Invoice #2024-01')
+                                ->required()
+                                ->maxLength(255)
+                                ->columnSpanFull(), // Il nome occupa tutta la riga
+
+                            Select::make('flow_type')
+                                ->label('Flow Type')
+                                ->options([
+                                    'income' => 'Income (Entrata)',
+                                    'expense' => 'Expense (Uscita)',
+                                ])
+                                ->required()
+                                ->native(false),
+
+                            TextInput::make('counterparty')
+                                ->label('Counterparty')
+                                ->placeholder('e.g. Acme Corp'),
+
+                            TextInput::make('amount')
+                                ->label('Amount')
+                                ->numeric()
+                                ->prefix('€')
+                                ->required(),
+
+                            Select::make('currency')
+                                ->label('Currency')
+                                ->options([
+                                    'EUR' => 'EUR (€)',
+                                    'USD' => 'USD ($)',
+                                    'GBP' => 'GBP (£)',
+                                ])
+                                ->default('EUR')
+                                ->required()
+                                ->native(false),
+
+                            DatePicker::make('issue_date')
+                                ->label('Issue Date')
+                                ->default(now())
+                                ->required(),
+
+                            DatePicker::make('due_date')
+                                ->label('Due Date')
+                                ->after('issue_date'),
+
+                            Select::make('status')
+                                ->label('Status')
+                                ->options([
+                                    'draft' => 'Draft',
+                                    'validated' => 'Validated',
+                                    'paid' => 'Paid',
+                                ])
+                                ->default('draft')
+                                ->required()
+                                ->columnSpanFull()
+                                ->native(false),
+                        ])
+                ])
+                ->mutateFormDataUsing(function (array $data): array {
+                    // Automatically assigned user_id by Auth
+                    $data['user_id'] = Auth::user()->id;
+                    return $data;
+                })
+                ->color('info')
         ];
     }
 }

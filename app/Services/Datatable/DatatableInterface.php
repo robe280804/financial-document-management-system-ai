@@ -9,4 +9,5 @@ interface DatatableInterface
     function makeFilters(): array;
     function makeActions(): array;
     function makeBulkActions(): array;
+    function headerActions(): array;
 }

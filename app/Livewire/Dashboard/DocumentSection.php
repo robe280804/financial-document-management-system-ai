@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Table;
 use Filament\Forms\Concerns\InteractsWithForms;
 use App\Models\FinancialDocument;
-
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\HeaderActionsPosition;
 
 class DocumentSection extends Component implements HasTable, HasForms
 {
@@ -35,6 +36,7 @@ class DocumentSection extends Component implements HasTable, HasForms
             ->query(
                 FinancialDocument::where('user_id', $this->user->id)->latest()
             )
+            ->headerActions($this->datatableService->headerActions())
             ->actions($this->datatableService->makeActions())
             ->columns($this->datatableService->makeColumns())
             ->filters($this->datatableService->makeFilters())
