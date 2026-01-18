@@ -1,51 +1,58 @@
-<div>
-    <div class="flex flex-col text-center">
-        <h1 class="text-2xl tracking-tight leading-none font-bold">
-            Financial Documents
+<div class="py-8 px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col text-center mb-10">
+        <h1 class="text-3xl md:text-4xl tracking-tight font-extrabold text-black dark:text-white italic uppercase">
+            Financial <span class="text-gray-400 font-light">Documents</span>
         </h1>
-        <!--
-        <p class="text-sm text-gray-400 mt-1">
-            <span class="font-medium ">Create, Update, Share and analyze</span>
-            your financial documents here
-        </p>
-    -->
+        <div class="mt-2 flex justify-center">
+            <div class="h-1 w-20 bg-black dark:bg-white rounded-full"></div>
+        </div>
     </div>
 
-    <div class="max-w-4xl mx-auto mt-3">
-        <section class="flex flex-wrap items-center justify-center gap-4 md:gap-10 py-3 px-6">
+    <div class="max-w-5xl mx-auto">
+        <section
+            class="grid grid-cols-2 md:grid-cols-5 gap-0 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm  ">
 
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total</span>
-                <span class="  px-2 py-0.5  text-sm font-mono font-bold">{{
-                    $totalDocuments }}</span>
+            <div
+                class="flex flex-col items-center justify-center py-6 px-4 border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-900 transition-colors hover:bg-gray-50 dark:hover:bg-zinc-950">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Total</span>
+                <span class="text-2xl font-mono font-black text-black dark:text-white">
+                    {{ $totalDocuments }}
+                </span>
             </div>
 
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Drafted</span>
-                <span class="  px-2 py-0.5  text-sm font-mono font-bold">{{
-                    $drafted
-                    }}</span>
+            <div
+                class="flex flex-col items-center justify-center py-6 px-4 border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-900 transition-colors hover:bg-gray-50 dark:hover:bg-zinc-950">
+                <span class="text-[10px] font-bold uppercase tracking-widest mb-1 text-yellow-500">Drafted</span>
+                <span class="text-2xl font-mono font-black text-black dark:text-white">
+                    {{ $drafted }}
+                </span>
             </div>
 
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Validated</span>
-                <span class="  px-2 py-0.5  text-sm font-mono font-bold">{{
-                    $validated
-                    }}</span>
+            <div
+                class="flex flex-col items-center justify-center py-6 px-4 border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-900 transition-colors hover:bg-gray-50 dark:hover:bg-zinc-950">
+                <span
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 text-blue-500/80">Validated</span>
+                <span class="text-2xl font-mono font-black text-black dark:text-white">
+                    {{ $validated }}
+                </span>
             </div>
 
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Paid</span>
-                <span class="  px-2 py-0.5 text-sm font-mono font-bold">{{
-                    $paid
-                    }}</span>
+            <div
+                class="flex flex-col items-center justify-center py-6 px-4 border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-900 transition-colors hover:bg-gray-50 dark:hover:bg-zinc-950">
+                <span
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 text-emerald-500/80">Paid</span>
+                <span class="text-2xl font-mono font-black text-black dark:text-white">
+                    {{ $paid }}
+                </span>
             </div>
 
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Archived</span>
-                <span class=" x-2 py-0.5 text-sm font-mono font-bold">{{
-                    $archived
-                    }}</span>
+            <div
+                class="flex flex-col items-center justify-center py-6 px-4 transition-colors hover:bg-gray-50 dark:hover:bg-zinc-950">
+                <span
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 text-red-700">Archived</span>
+                <span class="text-2xl font-mono font-black text-black dark:text-white">
+                    {{ $archived }}
+                </span>
             </div>
 
         </section>

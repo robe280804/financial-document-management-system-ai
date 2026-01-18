@@ -6,15 +6,13 @@ namespace App\Livewire\Dashboard;
 use Filament\Tables\Contracts\HasTable;
 use Livewire\Component;
 use App\Models\User;
-use App\Services\DatatableService;
+use App\Services\Datatable\DocumentFinancialTableService;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Table;
 use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\IconColumn;
 use App\Models\FinancialDocument;
 
 
@@ -22,11 +20,11 @@ class DocumentSection extends Component implements HasTable, HasForms
 {
     use InteractsWithTable, InteractsWithForms;
 
-    protected DatatableService $datatableService;
+    protected DocumentFinancialTableService $datatableService;
     public User $user;
     public Collection $financialDocuments;
 
-    public function boot(DatatableService $datatableService)
+    public function boot(DocumentFinancialTableService $datatableService)
     {
         $this->datatableService = $datatableService;
     }
@@ -37,8 +35,10 @@ class DocumentSection extends Component implements HasTable, HasForms
             ->query(
                 FinancialDocument::where('user_id', $this->user->id)->latest()
             )
-            ->columns($this->datatableService->financialDocumentColumns())
-            ->filters($this->datatableService->financialDocumentFilters())
+            ->actions($this->datatableService->makeActions())
+            ->columns($this->datatableService->makeColumns())
+            ->filters($this->datatableService->makeFilters())
+            ->bulkActions($this->datatableService->makeBulkActions())
             ->defaultPaginationPageOption(10);
     }
 
